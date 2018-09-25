@@ -46,16 +46,73 @@ A common python programming pattern to counting objects, produce histograms, or 
 
 
 ```python
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+%matplotlib inline
+```
+
+
+```python
 # Your code here
 
 # Pseudo-code Outline
 # Split the transcript into words
+words = macbeth.split()
 # Create a dictionary
+word_counts = {}
 # Iterate through the text of Macbeth
+for word in words:
+    word_counts[word] = word_counts.get(word, 0) + 1 #Get previous entry, update by 1
 # Update word counts
 # Create Bar Graph
+
+#With Pandas
+counts = pd.DataFrame.from_dict(word_counts, orient='index')
+counts = counts.sort_values(by=counts.columns[0], ascending=False)
+counts.head(25).plot(kind='barh')
+plt.title('Top 25 Words from Macbeth')
+plt.ylabel('Word')
+plt.xlabel('Number of Occurences')
 # Include descriptive titles and labels
 ```
+
+
+
+
+    <matplotlib.text.Text at 0x1c03bcdc748>
+
+
+
+
+![png](output_6_1.png)
+
+
+
+```python
+#With Lists
+counts = list(word_counts.items())
+top_25 = sorted(counts, key = lambda x: x[1], reverse=True)[:25]
+y = [item[1] for item in top_25]
+X = np.arange(len(y))
+plt.figure(figsize=(12,12))
+plt.bar(X , y)
+plt.xticks(X, [item[0] for item in top_25]);
+plt.ylabel('Number of Occurences')
+plt.xlabel('Word')
+plt.title('Top 25 Words in Macbeth')
+```
+
+
+
+
+    <matplotlib.text.Text at 0x1c03c29eb70>
+
+
+
+
+![png](output_7_1.png)
+
 
 ### Optional Extensions
 * Create a list of top characters by mentions of their names 
